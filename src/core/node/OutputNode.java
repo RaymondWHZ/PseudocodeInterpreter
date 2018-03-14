@@ -1,17 +1,14 @@
 package core.node;
 
-import core.interpretor.Interpretor;
+import core.interpreter.Interpreter;
 import core.util.SyntaxException;
 import core.util.Tokenizer;
-import core.util.VariablePool;
 
-public class OutputNode extends Node {
+class OutputNode extends Node {
 
-    String text;
+    private String text;
 
-    public OutputNode(Tokenizer code) {
-        super(code);
-
+    OutputNode(Tokenizer code) {
         if (!code.skip(" "))
             throw new SyntaxException("There should be a whitespace after OUTPUT keyword!");
 
@@ -21,13 +18,15 @@ public class OutputNode extends Node {
         }
 
         if (code.nextChar() == '\"') {
+            // 如果是字符串，就这样干
             text = code.readTill('\"');
-            code.skip("\"");
+            if(!code.skip("\""))
+                throw new SyntaxException("Missing a \'\"\'!");
         }
     }
 
     @Override
-    public void execute(VariablePool variablePool) {
-        Interpretor.output(text);
+    void execute(Pool pool) {
+        Interpreter.output(text);
     }
 }

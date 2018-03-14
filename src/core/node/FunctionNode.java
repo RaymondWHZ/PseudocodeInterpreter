@@ -1,24 +1,15 @@
 package core.node;
 
 import core.util.Tokenizer;
-import core.util.VariablePool;
 
-import java.util.HashMap;
+class FunctionNode extends Node {
 
-public class FunctionNode extends Node {
-
-    public static HashMap<String, FunctionNode> functionNodeMap = new HashMap<>();
-
-    public FunctionNode(Tokenizer code) {
-        super(code);
-
-        if(code.skip(" "))
-            functionNodeMap.put(code.nextName(), this);
+    FunctionNode(Tokenizer code) {
 
     }
 
     @Override
-    public void execute(VariablePool variablePool) {
+    void execute(Pool pool) {
 
     }
 }

@@ -1,49 +1,39 @@
 package core.node;
 
-import core.util.SyntaxException;
 import core.util.Tokenizer;
-import core.util.VariablePool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BlockNode extends Node{
+/**
+ * 带有多行代码的代码块，功能只有确定作用域和控制逐行执行
+ */
+class BlockNode extends Node{
 
-    public final VariablePool variablePool = new VariablePool();
+    private final ArrayList<Node> lineNodeList = new ArrayList<>();
 
-    public final HashMap<String, NodeFactory> nodeFactoryMap = new HashMap<>();
-
-    public final ArrayList<Node> commandNodeList = new ArrayList<>();
-
-    public BlockNode(Tokenizer code) {
-        super(code);
-
-        setupFactoryMap(code);
-
-        while (code.hasNext()) {
-            String nextWord = code.nextName();
-            if (nodeFactoryMap.containsKey(nextWord)) {
-                Node newNode = nodeFactoryMap.get(nextWord).create();
-                if (newNode != null)
-                    commandNodeList.add(newNode);
-            }
-            else
-                throw new SyntaxException("Syntax not found: " + nextWord);
-            code.skipWhitespaces();
-        }
+    BlockNode(Tokenizer code) {
+        this(code, null);
     }
 
-    protected void setupFactoryMap(Tokenizer code) {
-        nodeFactoryMap.put("OUTPUT", () -> new OutputNode(code));
+    BlockNode(Tokenizer code, HashMap<String, NodeFactory> extraMap) {
+        if (extraMap == null)
+            extraMap = new HashMap<>();
+
+        while (code.hasNext()) {
+            lineNodeList.add(new LineNode(code, extraMap));
+        }
     }
 
     @Override
-    public void execute(VariablePool variablePool) {
-        this.variablePool.outer = variablePool;
+    public void execute(Pool pool) {
+        pool.setUpRange();
 
-        for (Node node: commandNodeList) {
+        for (Node node: lineNodeList) {
             if (node != null)
-                node.execute(this.variablePool);
+                node.execute(pool);
         }
+
+        pool.tearDownRange();
     }
 }

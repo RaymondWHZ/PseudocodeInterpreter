@@ -1,6 +1,6 @@
 package core.node;
 
-public interface NodeFactory {
+interface NodeFactory {
 
     public Node create();
 }

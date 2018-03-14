@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PsuedocodeInterpretor.iml" filepath="$PROJECT_DIR$/PsuedocodeInterpretor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PsuedocodeInterpreter.iml" filepath="$PROJECT_DIR$/PsuedocodeInterpreter.iml" />
     </modules>
   </component>
 </project>

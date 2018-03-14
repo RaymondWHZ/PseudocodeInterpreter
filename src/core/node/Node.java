@@ -1,11 +1,9 @@
 package core.node;
 
-import core.util.Tokenizer;
-import core.util.VariablePool;
+/**
+ * 所有节点类的基类，保证持有execute方法
+ */
+class Node {
 
-public class Node {
-
-    public Node(Tokenizer code) { }
-
-    public void execute(VariablePool variablePool) { }
+    void execute(Pool pool) { }
 }

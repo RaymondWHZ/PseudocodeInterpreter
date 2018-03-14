@@ -1,8 +1,5 @@
 package core.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static java.lang.Character.isLetterOrDigit;
 
 public class Tokenizer {
@@ -96,6 +93,12 @@ public class Tokenizer {
         return false;
     }
 
+    /**
+     * 一直读取文本知道遇到指定字符中的任何一个
+     *
+     * @param chars 断句符，可以是多个
+     * @return 读到的文本
+     */
     public String readTill(char... chars) {
         int startPosition = currentIndex;
 
