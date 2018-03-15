@@ -8,7 +8,7 @@ class OutputNode extends Node {
 
     private String text;
 
-    OutputNode(Tokenizer code) {
+    public OutputNode(Tokenizer code) {
         if (!code.skip(" "))
             throw new SyntaxException("There should be a whitespace after OUTPUT keyword!");
 
@@ -26,7 +26,7 @@ class OutputNode extends Node {
     }
 
     @Override
-    void execute(Pool pool) {
+    public void execute(NodePool pool) {
         Interpreter.output(text);
     }
 }

@@ -4,12 +4,12 @@ import core.util.Tokenizer;
 
 class ProcedureNode extends Node {
 
-    ProcedureNode(Tokenizer code) {
+    public ProcedureNode(Tokenizer code) {
 
     }
 
     @Override
-    void execute(Pool pool) {
+    public void execute(NodePool pool) {
 
     }
 }

@@ -12,7 +12,7 @@ class LineNode extends Node {
 
     private Node node;
 
-    LineNode(Tokenizer code, HashMap<String, NodeFactory> extraMap) {
+    public LineNode(Tokenizer code, HashMap<String, NodeFactory> extraMap) {
         // 将所有的节点可能性全部放入数组
         // TODO 思考这里只通过检测第一个词来路由的方式是否合理，如果不合理就需要重新设计
         extraMap.put("OUTPUT", () -> new OutputNode(code));
@@ -29,7 +29,7 @@ class LineNode extends Node {
     }
 
     @Override
-    void execute(Pool pool) {
+    public void execute(NodePool pool) {
         node.execute(pool);
     }
 }

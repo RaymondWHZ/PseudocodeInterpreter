@@ -5,5 +5,5 @@ package core.node;
  */
 class Node {
 
-    void execute(Pool pool) { }
+    public void execute(NodePool pool) { }
 }

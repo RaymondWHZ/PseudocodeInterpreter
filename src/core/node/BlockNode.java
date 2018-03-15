@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * 带有多行代码的代码块，功能只有确定作用域和控制逐行执行
+ * 带有多行代码的代码块，功能为确定作用域和控制逐行解析执行
  */
 class BlockNode extends Node{
 
     private final ArrayList<Node> lineNodeList = new ArrayList<>();
 
-    BlockNode(Tokenizer code) {
+    public BlockNode(Tokenizer code) {
         this(code, null);
     }
 
-    BlockNode(Tokenizer code, HashMap<String, NodeFactory> extraMap) {
+    public BlockNode(Tokenizer code, HashMap<String, NodeFactory> extraMap) {
         if (extraMap == null)
             extraMap = new HashMap<>();
 
@@ -26,7 +26,7 @@ class BlockNode extends Node{
     }
 
     @Override
-    public void execute(Pool pool) {
+    public void execute(NodePool pool) {
         pool.setUpRange();
 
         for (Node node: lineNodeList) {

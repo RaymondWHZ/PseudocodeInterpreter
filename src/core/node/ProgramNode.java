@@ -27,14 +27,14 @@ public class ProgramNode extends Node {
     }
 
     public void execute() {
-        blockNode.execute(new Pool());
+        blockNode.execute(new NodePool());
     }
 
     /**
      * 在ProgramNode里面调用执行的时候，并不存在上层的变量池，所以不应当使用。
      */
     @Deprecated
-    public void execute(Pool pool) {
+    public void execute(NodePool pool) {
         execute();
     }
 }
