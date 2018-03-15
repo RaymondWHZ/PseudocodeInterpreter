@@ -5,25 +5,20 @@ import core.util.Tokenizer;
 import java.util.HashMap;
 
 /**
- * 代表整个程序，给代码块节点加入子程序关键字判断条目
+ * 代表整个程序
  */
 public class ProgramNode extends Node {
 
     private BlockNode blockNode;
 
     public ProgramNode(Tokenizer code) {
-        HashMap<String, NodeFactory> extraMap = new HashMap<>();
+        HashMap<String, NodeFactory> presetMap = new HashMap<>();
 
-        extraMap.put("PROCEDURE", () -> {
-            new ProcedureNode(code);
-            return null;
-        });
-        extraMap.put("FUNCTION", () -> {
-            new FunctionNode(code);
-            return null;
-        });
+        // 给代码块节点加入子程序关键字判断条目
+        presetMap.put("PROCEDURE", () -> new ProcedureNode(code));
+        presetMap.put("FUNCTION", () -> new FunctionNode(code));
 
-        blockNode = new BlockNode(code, extraMap);
+        blockNode = new BlockNode(code, presetMap);
     }
 
     public void execute() {

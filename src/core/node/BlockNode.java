@@ -16,12 +16,12 @@ class BlockNode extends Node{
         this(code, null);
     }
 
-    public BlockNode(Tokenizer code, HashMap<String, NodeFactory> extraMap) {
-        if (extraMap == null)
-            extraMap = new HashMap<>();
+    public BlockNode(Tokenizer code, HashMap<String, NodeFactory> presetMap) {
+        if (presetMap == null)
+            presetMap = new HashMap<>();
 
         while (code.hasNext()) {
-            lineNodeList.add(new LineNode(code, extraMap));
+            lineNodeList.add(new LineNode(code, presetMap));
         }
     }
 
