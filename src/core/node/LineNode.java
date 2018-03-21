@@ -12,14 +12,10 @@ class LineNode extends Node {
 
     private Node node;
 
-    public LineNode(Tokenizer code, HashMap<String, NodeFactory> presetMap) {
-        // 将所有的节点可能性全部放入数组
-        // TODO 思考这里只通过检测第一个词来路由的方式是否合理，如果不合理就需要重新设计
-        presetMap.put("OUTPUT", () -> new OutputNode(code));
-
+    public LineNode(Tokenizer code, HashMap<String, NodeFactory> grammarMap) {
         String nextWord = code.nextName();
-        if (presetMap.containsKey(nextWord)) {
-            node = presetMap.get(nextWord).create();
+        if (grammarMap.containsKey(nextWord)) {
+            node = grammarMap.get(nextWord).create();
         }
         else if (code.skip("<-"))
             ;  // TODO 调用处理变量赋值的类
