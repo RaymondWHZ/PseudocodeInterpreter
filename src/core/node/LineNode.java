@@ -24,7 +24,7 @@ class LineNode extends Node {
         else if (code.skip("<-"))
             ;  // TODO 调用处理变量赋值的类
         else
-            throw new SyntaxException("Syntax not found: " + nextWord);
+            throw new SyntaxException("Syntax not found: " + nextWord, code);
         code.skipWhitespaces();
     }
 

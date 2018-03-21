@@ -10,7 +10,7 @@ class OutputNode extends Node {
 
     public OutputNode(Tokenizer code) {
         if (!code.skip(" "))
-            throw new SyntaxException("There should be a whitespace after OUTPUT keyword!");
+            throw new SyntaxException("There should be a whitespace after OUTPUT keyword!", code);
 
         String nextName;
         if ((nextName = code.nextName()).length() > 0) {
@@ -21,7 +21,7 @@ class OutputNode extends Node {
             // 如果是字符串，就这样干
             text = code.readTill('\"');
             if(!code.skip("\""))
-                throw new SyntaxException("Missing a \'\"\'!");
+                throw new SyntaxException("Missing a \'\"\'!", code);
         }
     }
 

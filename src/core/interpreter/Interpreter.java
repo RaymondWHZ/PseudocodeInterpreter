@@ -11,6 +11,7 @@ public class Interpreter {
 
     private static InputListener inputListener;
     private static ArrayList<OutputListener> outputListeners = new ArrayList<>();
+    private static ArrayList<ExceptionListener> exceptionListeners = new ArrayList<>();
 
     /**
      * 解析传入的代码并保存解析完的节点树
@@ -19,7 +20,11 @@ public class Interpreter {
      */
     public static void interpret(String code) {
         Tokenizer tokenizer = new Tokenizer(code);
-        program = new ProgramNode(tokenizer);
+        try {
+            program = new ProgramNode(tokenizer);
+        } catch (Exception e) {
+            handleException(e);
+        }
     }
 
     /**
@@ -27,7 +32,11 @@ public class Interpreter {
      */
     public static void execute() {
         if (program != null)
-            program.execute();
+            try {
+                program.execute();
+            } catch (Exception e) {
+                handleException(e);
+            }
     }
 
     public static void setInputListener(InputListener listener) {
@@ -43,6 +52,10 @@ public class Interpreter {
         outputListeners.add(listener);
     }
 
+    public static void removeOutputListener(OutputListener listener) {
+        outputListeners.remove(listener);
+    }
+
     public static String input() {
         return inputListener.obtainInput();
     }
@@ -55,5 +68,18 @@ public class Interpreter {
     public static void output(String text) {
         for (OutputListener listener: outputListeners)
             listener.outputOccur(text);
+    }
+
+    public static void addExceptionListener(ExceptionListener listener) {
+        exceptionListeners.add(listener);
+    }
+
+    public static void removeExceptionListener(ExceptionListener listener) {
+        exceptionListeners.remove(listener);
+    }
+
+    private static void handleException(Exception e) {
+        for (ExceptionListener listener: exceptionListeners)
+            listener.handleException(e);
     }
 }

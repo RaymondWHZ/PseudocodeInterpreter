@@ -1,8 +1,14 @@
 package core.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static java.lang.Character.isLetterOrDigit;
 
 public class Tokenizer {
+
+    private int currentLine = 1;
+    private ArrayList<Integer> returnIndices = new ArrayList<>(Arrays.asList(0, 0));
 
     /**
      * 现在已经读到的位置的指针
@@ -33,6 +39,7 @@ public class Tokenizer {
      */
     public void reset() {
         currentIndex = 0;
+        currentLine = 1;
     }
 
     /**
@@ -41,7 +48,13 @@ public class Tokenizer {
      * @return 下一位字符
      */
     public char nextChar() {
-        return text.charAt(currentIndex++);
+        char c = text.charAt(currentIndex++);
+        if(c == '\n') {
+            currentLine++;
+            if (!returnIndices.contains(currentIndex))
+                returnIndices.add(currentLine, currentIndex);
+        }
+        return c;
     }
 
     /**
@@ -130,6 +143,8 @@ public class Tokenizer {
      */
     public void goBack(int places) {
         currentIndex -= places;
+        while (currentIndex < returnIndices.get(currentLine))
+            currentLine--;
     }
 
     /**
@@ -139,5 +154,35 @@ public class Tokenizer {
      */
     public int getCurrentIndex() {
         return currentIndex;
+    }
+
+    public int getCurrentLine() {
+        return currentLine;
+    }
+
+    public int getCurrentCharNumber() {
+        return currentIndex + 1 - returnIndices.get(currentLine);
+    }
+
+    public Navigator getCurrentNavigator() {
+        return new Navigator(
+                getCurrentLine(),
+                getCurrentCharNumber()
+        );
+    }
+
+    public class Navigator {
+
+        public final int lineNumber, charNumber;
+
+        public Navigator(int lineNumber, int charNumber) {
+            this.lineNumber = lineNumber;
+            this.charNumber = charNumber;
+        }
+
+        @Override
+        public String toString() {
+            return "line: " + lineNumber + ", char: " + charNumber;
+        }
     }
 }
