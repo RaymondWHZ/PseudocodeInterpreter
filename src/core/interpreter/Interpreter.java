@@ -1,6 +1,8 @@
 package core.interpreter;
 
 import core.node.ProgramNode;
+import core.util.RunningException;
+import core.util.SyntaxException;
 import core.util.Tokenizer;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class Interpreter {
         Tokenizer tokenizer = new Tokenizer(code);
         try {
             program = new ProgramNode(tokenizer);
-        } catch (Exception e) {
+        } catch (SyntaxException e) {
             handleException(e);
         }
     }
@@ -34,14 +36,31 @@ public class Interpreter {
         if (program != null)
             try {
                 program.execute();
-            } catch (Exception e) {
+            } catch (RunningException e) {
                 handleException(e);
             }
     }
 
+    /**
+     * 挂载监听并提供程序输入的监听器，只能有一个
+     *
+     * @param listener 实例化的监听器
+     */
     public static void setInputListener(InputListener listener) {
         inputListener = listener;
     }
+
+    public static void removeInputListener() {
+        setInputListener(null);
+    }
+
+    /**
+     * 当程序需要得到输入的时候，调用此方法，会自动交给监听器代理
+     */
+    public static String input() {
+        return inputListener.obtainInput();
+    }
+
 
     /**
      * 挂载监听程序输出的监听器
@@ -56,10 +75,6 @@ public class Interpreter {
         outputListeners.remove(listener);
     }
 
-    public static String input() {
-        return inputListener.obtainInput();
-    }
-
     /**
      * 当程序需要输出的时候，调用此方法，会自动交给监听器代理
      *
@@ -70,6 +85,12 @@ public class Interpreter {
             listener.outputOccur(text);
     }
 
+
+    /**
+     * 挂载监听程序异常的监听器，可能是Syntax和Running中的任何一者，需要自行判断
+     *
+     * @param listener 实例化的监听器
+     */
     public static void addExceptionListener(ExceptionListener listener) {
         exceptionListeners.add(listener);
     }
