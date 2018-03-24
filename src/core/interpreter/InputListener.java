@@ -1,6 +1,6 @@
 package core.interpreter;
 
-public interface InputListener {
+public abstract class InputListener {
 
-    public String obtainInput();
+    public abstract String obtainInput();
 }
